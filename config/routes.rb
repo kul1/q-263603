@@ -14,7 +14,8 @@ Rails.application.routes.draw do
   get '/auth/:provider/callback' => 'sessions#create'
   get '/auth/failure' => 'sessions#destroy'
   get '/logout' => 'sessions#destroy', :as => 'logout'
-  get '/articles/my' => 'articles/my'
+  get '/articles/my' => 'articles#my'
+  get '/articles/show' => 'articles#show'
   get '/articles/my/destroy' => 'articles#destroy'
   get '/docs/my' => 'docs/my'
   get '/notes/my' => 'notes/my'
@@ -22,7 +23,11 @@ Rails.application.routes.draw do
   get '/notes/my/destroy/:id' => 'notes#destroy'
   get '/notes/destroy/:id' => 'notes#destroy'
   get '/jinda/document/:id' => 'jinda#document'
-  resources :articles
+  resources :articles do
+    resources :comments
+  end
+  
+  resources :comments
   resources :notes
   resources :docs
   resources :users
