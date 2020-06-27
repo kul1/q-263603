@@ -1,0 +1,30 @@
+<style>code { font-size: 0.8em;}</style>
+<p>&lt;%= File.read(‘README.md’) %&gt;</p>
+<hr />
+<h1 id="help_under_construction_dui">Help (UNDER CONSTRUCTION: DUI)</h1>
+
+<p>&lt;%= render :partial=&gt;‘jinda/modul.md’, :collection=&gt; Jinda::Module.all.asc(:seq) %&gt;</p>
+<hr />
+<h1 id="admin">Admin</h1>
+
+<h2 id="data_structure">Data Structure</h2>
+
+<p>&lt;%- models= @app.elements[//node@TEXT=models] %&gt;</p>
+
+<p>&lt;%= render :partial=&gt;‘jinda/model.md’, :collection=&gt; models.map {|m| m.attributes[TEXT] } %&gt;</p>
+<hr />
+<h1 id="contents">Contents</h1>
+
+<h2 id="markdown">markdown</h2>
+
+<p>This document created and edited with <a href='http://daringfireball.net/projects/markdown/syntax' target='_blank'>markdown</a></p>
+
+<p>Contents:</p>
+
+<ul>
+<li>Requirement at <code>README.md</code></li>
+
+<li>Controller Help at <code>app/controllers/system.md</code></li>
+
+<li>Project at <code>app/views/project/&lt;งาน&gt;.md</code> * *</li>
+</ul>

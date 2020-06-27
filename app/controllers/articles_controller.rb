@@ -60,14 +60,25 @@ class ArticlesController < ApplicationController
     # Use Rails 
     # before_action
 
-    if current_ma_user.role.upcase.split(',').include?("A") || current_ma_user == @article.user
+    if current_admin? || current_ma_user == @article.user
       @article.destroy
     end
-    redirect_to :action=>'my'
 
+      action = (current_admin? ? 'index' : 'my') 
+      binding.pry
+      redirect_to :action=> (current_admin? ? 'index' : 'my') 
   end
 
   private
+  
+  def  current_admin?
+    if current_ma_user.role.upcase.split(',').include?("A") 
+      return true
+    else
+      return false
+    end
+  end
+
 
   def load_articles
     @articles = Article.desc(:created_at).page(params[:page]).per(10)
