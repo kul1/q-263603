@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
  before_action :load_articles, except: [:destroy] 
  before_action :load_my_articles, only: [:my]
- #before_action :load_article, only: [:destroy, :update]
+ before_action :load_article, only: [:destroy, :update]
 
 	def index
     # before_action
@@ -12,8 +12,6 @@ class ArticlesController < ApplicationController
   end
 
   def show
-   # article_param = params[:article_id]
-    binding.pry
     @article = Article.find(params[:article_id])
     @comments = @article.comments.desc(:created_at).page(params[:page]).per(10)
     prepare_meta_tags(title: @article.title,
@@ -36,10 +34,21 @@ class ArticlesController < ApplicationController
     @article.save!
   end
 
-  def update
-    # Use Jinda $xvars
-		article_id = $xvars["select_article"] ? $xvars["select_article"]["title"] : $xvars["p"]["article_id"]
+  def my_update
+    # before_action
+    binding.pry
+    @article.update(title: $xvars["edit_article"]["article"]["title"],
+                    text: $xvars["edit_article"]["article"]["text"],
+                    keywords: $xvars["edit_article"]["article"]["keywords"],
+                    body: $xvars["edit_article"]["article"]["body"]
+										)
+  end
 
+  def j_update
+    binding.pry
+    # Use Jinda $xvars
+		@article_id = $xvars["select_article"] ? $xvars["select_article"]["title"] : $xvars["p"]["article_id"]
+    @article = Article.find_by :id => @article_id
     @article.update(title: $xvars["edit_article"]["article"]["title"],
                     text: $xvars["edit_article"]["article"]["text"],
                     keywords: $xvars["edit_article"]["article"]["keywords"],
@@ -59,6 +68,7 @@ class ArticlesController < ApplicationController
   end
 
   private
+
   def load_articles
     @articles = Article.desc(:created_at).page(params[:page]).per(10)
   end
@@ -68,7 +78,7 @@ class ArticlesController < ApplicationController
   end
 
   def load_article
-    @article = Article.find(params.require(:article).permit(:article_id))
+    @article = Article.find(params[:article_id])
   end
 
   def article_params
